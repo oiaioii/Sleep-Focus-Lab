@@ -1,5 +1,5 @@
 let startTime, sleepHours;
-let blinkInterval;
+let blinkInterval; // 깜빡임 타이머를 외부에서 접근 가능하게
 
 document.getElementById('startBtn').onclick = () => {
   sleepHours = parseFloat(document.getElementById('sleepInput').value);
@@ -19,16 +19,16 @@ document.getElementById('startBtn').onclick = () => {
   const colors = ["gray", "yellow", "pink"];
   let colorIndex = 0;
 
-  // 색상 순환 시작
+  // 깜빡임 무한 루프 시작
   blinkInterval = setInterval(() => {
-    testBox.style.backgroundColor = colors[colorIndex];
     colorIndex = (colorIndex + 1) % colors.length;
-  }, 300); // 0.3초 간격으로 색상 변경
+    testBox.style.backgroundColor = colors[colorIndex];
+  }, 300);
 
-  // 일정 시간 기다린 뒤에 "Click now!" 표시
+  // 일정 시간 후 반응 속도 테스트 시작
   const delay = Math.random() * 3000 + 2000; // 2~5초
   setTimeout(() => {
-    clearInterval(blinkInterval);
+    clearInterval(blinkInterval); // 깜빡임 멈추기
     testBox.style.backgroundColor = "green";
     testBox.innerText = "Click now!";
     startTime = Date.now();
@@ -45,7 +45,7 @@ document.getElementById('testBox').onclick = () => {
   result.innerText = `You slept ${sleepHours} hours. Your reaction time: ${reactionTime} ms`;
 
   if (sleepHours < 6) {
-    advice.innerText = "You need more sleep. Aim for at least 7~8 hours for better focus!";
+    advice.innerText = "You need more sleep. Aim for at least 7–8 hours for better focus!";
   }
 
   sendToSheet(sleepHours, reactionTime);
@@ -53,7 +53,7 @@ document.getElementById('testBox').onclick = () => {
 };
 
 function sendToSheet(hours, rt) {
-  fetch("https://script.google.com/macros/s/AKfycbxuo77taGLtLGWDchcIWN7KrpZGSX5KI9vK3hR5kItnFpZeAwdMY1RtgDUsqi7iw6dQUg/exec", {
+  fetch("YOUR_GOOGLE_APPS_SCRIPT_URL", {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
